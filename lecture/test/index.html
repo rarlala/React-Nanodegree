@@ -190,10 +190,22 @@
 
         removeItem = todo => {
           this.props.store.dispatch(removeTodoAction(todo.id));
+          
+          return API.deleteTodo(todo.id)
+            .catch(()=>{
+              this.props.store.dispatch(addTodoAction(todo))
+              alert('Error')
+            })
         };
 
         toggleItem = id => {
           this.props.store.dispatch(toggleTodoAction(id));
+
+          return API.saveTodoToggle(id)
+            .catch(()=>{
+              this.props.store.dispatch(toggleGoalAction(goal))
+              alert('Error')
+            })
         };
 
         render() {
@@ -232,6 +244,22 @@
 
         removeItem = todo => {
           this.props.store.dispatch(removeGoalAction(goal.id));
+
+          return API.deleteGoal(goal.id)
+            .catch(()=>{
+              this.props.store.dispatch(addGoalAction(goal))
+              alert('Error')
+            })
+        };
+
+        toggleItem = id => {
+          this.props.store.dispatch(toggleGoalAction(id));
+
+          return API.saveGoalToggle(id)
+            .catch(()=>{
+              this.props.store.dispatch(toggleGoalAction(goal))
+              alert('Error')
+            })
         };
 
         render() {
@@ -271,7 +299,7 @@
           if (loading === true ){
             return (<h1>loading </h1>)
           }
-          
+
           return (
             <div>
               <Todos todos={todos} store={this.props.store} />
