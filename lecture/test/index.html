@@ -74,6 +74,18 @@
         }
       }
 
+      function handleDeleteTodo(todo){
+        return (dispatch) => {
+         dispatch(removeTodoAction(todo.id));
+          
+        return API.deleteTodo(todo.id)
+          .catch(()=>{
+            dispatch(addTodoAction(todo))
+            alert('Error')
+          })
+        }
+      }
+
       function todos(state = [], action) {
         switch (action.type) {
           case ADD_TODO:
@@ -148,7 +160,7 @@
           goals,
           loading,
         }),
-        Redux.applyMiddleware(checker, logger)
+        Redux.applyMiddleware(ReduxThunk, checker, logger)
       );
     </script>
 
@@ -189,13 +201,7 @@
         };
 
         removeItem = todo => {
-          this.props.store.dispatch(removeTodoAction(todo.id));
-          
-          return API.deleteTodo(todo.id)
-            .catch(()=>{
-              this.props.store.dispatch(addTodoAction(todo))
-              alert('Error')
-            })
+          this.props.store.dispatch(handleDeleteTodo(todo))
         };
 
         toggleItem = id => {
